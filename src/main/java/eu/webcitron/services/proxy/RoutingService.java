@@ -30,7 +30,7 @@ public class RoutingService {
         Arrays.stream(hostnames).forEach(hostname -> apiManager.addApi(new ApplicationApi(hostname)));
     }
 
-    public String fetchApiResponse(String payload) throws NoApiAvailableException, ProcessingException {
+    public String fetchApiResponse(String payload) throws NoApiAvailableException {
         int apisCount = apiManager.getApisCount();
 
         for (int i = 0; i < apisCount; i++) {

@@ -15,59 +15,48 @@ import static org.hamcrest.Matchers.equalTo;
 @QuarkusTest
 class ProxyResourceTest {
 
-//    @InjectMock
-//    private RoutingService apiManagerMock;
-//
-//    @Test
-//    void testProxyEndpointReturns200AndMirroringResponse() {
-//        String payload = "{\"test\":\"test value\"}";
-//
-//        Mockito.when(apiManagerMock.fetchApiResponse(payload)).thenReturn(payload);
-//
-//        given().contentType(ContentType.JSON)
-//                .body(payload)
-//                .when().post("/proxy")
-//                .then()
-//                .statusCode(200)
-//                .body(is(payload));
-//    }
-//
-//    @Test
-//    void testProxyEndpointReturns415OnNonJsonRequest() {
-//        given().when().post("/proxy")
-//                .then()
-//                .statusCode(415);
-//    }
-//
-//    @Test
-//    void testProxyEndpointReturns422OnReceiveInvalidJson() {
-//        given().contentType(ContentType.JSON)
-//                .body("{\"invalid\":\"json\"")
-//                .when().post("/proxy")
-//                .then()
-//                .statusCode(422);
-//    }
-//
-//    @Test
-//    void testProxyEndpointReturns503OnNoApiAvailableException() {
-//        Mockito.when(apiManagerMock.fetchApiResponse("")).thenThrow(new NoApiAvailableException(""));
-//
-//        given().contentType(ContentType.JSON)
-//                .when().post("/proxy")
-//                .then()
-//                .statusCode(503)
-//                .header("Retry-After", equalTo("5"));
-//    }
-//
-//    @Test
-//    void testProxyEndpointReturns503OnProcessingException() {
-//        Mockito.when(apiManagerMock.fetchApiResponse("")).thenThrow(new ProcessingException(""));
-//
-//        given().contentType(ContentType.JSON)
-//                .when().post("/proxy")
-//                .then()
-//                .statusCode(503)
-//                .header("Retry-After", equalTo("5"));
-//    }
+    @InjectMock
+    private RoutingService routingServiceMock;
+
+    @Test
+    void testProxyEndpointReturns200AndMirroringResponse() {
+        String payload = "{\"test\":\"test value\"}";
+
+        Mockito.when(routingServiceMock.fetchApiResponse(payload)).thenReturn(payload);
+
+        given().contentType(ContentType.JSON)
+                .body(payload)
+                .when().post("/proxy")
+                .then()
+                .statusCode(200)
+                .body(is(payload));
+    }
+
+    @Test
+    void testProxyEndpointReturns415OnNonJsonRequest() {
+        given().when().post("/proxy")
+                .then()
+                .statusCode(415);
+    }
+
+    @Test
+    void testProxyEndpointReturns422OnReceiveInvalidJson() {
+        given().contentType(ContentType.JSON)
+                .body("{\"invalid\":\"json\"")
+                .when().post("/proxy")
+                .then()
+                .statusCode(422);
+    }
+
+    @Test
+    void testProxyEndpointReturns503OnNoApiAvailableException() {
+        Mockito.when(routingServiceMock.fetchApiResponse("")).thenThrow(new NoApiAvailableException(""));
+
+        given().contentType(ContentType.JSON)
+                .when().post("/proxy")
+                .then()
+                .statusCode(503)
+                .header("Retry-After", equalTo("5"));
+    }
 
 }
