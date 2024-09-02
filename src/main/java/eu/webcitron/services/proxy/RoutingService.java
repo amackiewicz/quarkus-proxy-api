@@ -3,8 +3,8 @@ package eu.webcitron.services.proxy;
 import jakarta.annotation.PostConstruct;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
-import jakarta.ws.rs.ProcessingException;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
+
 import java.util.*;
 
 @ApplicationScoped
@@ -35,19 +35,13 @@ public class RoutingService {
 
         for (int i = 0; i < apisCount; i++) {
             ApplicationApi api = apiManager.getHealthyApi();
-            api.setHealthy(true);
             try {
-                return attemptApiRequest(api, payload);
+                return restClient.post( api.host() + "/mirror", payload).toString();
             } catch (Exception e) {
                 api.setHealthy(false);
             }
         }
 
         throw new NoApiAvailableException("No API available.");
-    }
-
-    private String attemptApiRequest(ApplicationApi api, String payload) {
-        String apiUrl = api.host() + "/mirror";
-        return restClient.post(apiUrl, payload).toString();
     }
 }

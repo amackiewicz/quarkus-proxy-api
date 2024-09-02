@@ -40,15 +40,15 @@ public class ApiManager {
     }
 
     /**
-     *
      * consider synchronized here
      */
     public ApplicationApi getHealthyApi() {
         ApplicationApi api;
-        int maxAttempts = apis.size();
+        int numberOfApis = apis.size();
 
-        for (int attempt = 0; attempt < maxAttempts; attempt++) {
-            api = apis.get(index.getAndIncrement() % apis.size());
+        for (int attempt = 0; attempt < numberOfApis; attempt++) {
+            int currentIndex = index.getAndUpdate(i -> (i + 1) % numberOfApis);
+            api = apis.get(currentIndex);
             if (api.healthy()) {
                 return api;
             }
